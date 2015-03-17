@@ -20,6 +20,7 @@
 		32541BC81AB8BA4B0021794A /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 32541BC11AB8BA4B0021794A /* zip.c */; };
 		32541BC91AB8BA4B0021794A /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 32541BC41AB8BA4B0021794A /* SSZipArchive.m */; };
 		32541BCB1AB8BB330021794A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32541BCA1AB8BB330021794A /* libz.dylib */; };
+		32541BCE1AB8C8E60021794A /* JSONViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32541BCD1AB8C8E60021794A /* JSONViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,8 @@
 		32541BC31AB8BA4B0021794A /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
 		32541BC41AB8BA4B0021794A /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
 		32541BCA1AB8BB330021794A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		32541BCC1AB8C8E60021794A /* JSONViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONViewController.h; sourceTree = "<group>"; };
+		32541BCD1AB8C8E60021794A /* JSONViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +108,8 @@
 				32541B971AB897FF0021794A /* AppDelegate.m */,
 				32541B991AB897FF0021794A /* ViewController.h */,
 				32541B9A1AB897FF0021794A /* ViewController.m */,
+				32541BCC1AB8C8E60021794A /* JSONViewController.h */,
+				32541BCD1AB8C8E60021794A /* JSONViewController.m */,
 				32541BB81AB8BA4B0021794A /* SSZipArchive */,
 				32541B9C1AB897FF0021794A /* Main.storyboard */,
 				32541B9F1AB897FF0021794A /* Images.xcassets */,
@@ -267,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32541BC71AB8BA4B0021794A /* unzip.c in Sources */,
+				32541BCE1AB8C8E60021794A /* JSONViewController.m in Sources */,
 				32541B9B1AB897FF0021794A /* ViewController.m in Sources */,
 				32541B981AB897FF0021794A /* AppDelegate.m in Sources */,
 				32541BC51AB8BA4B0021794A /* ioapi.c in Sources */,

@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "SSZipArchive.h"
+#import "JSONViewController.h"
 
 @interface ViewController ()
 
@@ -20,7 +21,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     NSURLSession *session = [NSURLSession sharedSession];
-    
+    //
     NSURLSessionDataTask *dataTask = [session dataTaskWithURL:[NSURL URLWithString:@"http://192.168.1.24/foo/foo.txt"] completionHandler:^(NSData *data,NSURLResponse *response, NSError * error){
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         labelone.text = [NSString stringWithFormat:@"Version %@", [json objectForKey:@"version"]];
@@ -33,16 +34,19 @@
         
         if (version > prevVer) {
             NSLog(@"Oooh, we need to update %d %d", prevVer, version);
-            //[defaults setInteger:version forKey:@"version"];
+            [defaults setInteger:version forKey:@"version"];
             [defaults synchronize];
             [self updateDocPack:version withSession:session];
         } else {
             NSLog(@"All good");
+            JSONViewController * controller = (JSONViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"JSONViewController"];
+            [self presentViewController:controller animated:YES completion:nil];
+
         }
     }];
     
     [dataTask resume];
-    
+    labelone.text = [NSString stringWithFormat:@"Version ?"];
 }
 
 - (void)updateDocPack:(int)newVer withSession:(NSURLSession *)session {
@@ -56,12 +60,13 @@
         
         NSLog(@"Storing file to %@", zipPath);
         [data writeToFile:zipPath options:0 error:&error];
-//        NSString *destinationPath= [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-        NSLog(@"Unzipping to %@", path);
-//       NSString *destinationPath = dirpath;
-        [SSZipArchive unzipFileAtPath:zipPath toDestination:path];
+        NSArray *docpaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *destinationPath= [docpaths lastObject];
+        NSLog(@"Unzipping to %@", destinationPath);
+        [SSZipArchive unzipFileAtPath:zipPath toDestination:destinationPath];
         
-        
+        JSONViewController * controller = (JSONViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"JSONViewController"];
+        [self presentViewController:controller animated:YES completion:nil];
     }];
     [zipTask resume];
 
