@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "SSZipArchive.h"
 
 @interface ViewController ()
 
@@ -20,13 +21,50 @@
     
     NSURLSession *session = [NSURLSession sharedSession];
     
-    NSLog(@"trying!");
     NSURLSessionDataTask *dataTask = [session dataTaskWithURL:[NSURL URLWithString:@"http://192.168.1.24/foo/foo.txt"] completionHandler:^(NSData *data,NSURLResponse *response, NSError * error){
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        NSLog(@"%@", json);
+        labelone.text = [NSString stringWithFormat:@"Version %@", [json objectForKey:@"version"]];
+        int version = [[json objectForKey:@"version"] intValue];
+        NSLog(@"%@", [NSString stringWithFormat:@"Version %d", version]);
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
+        int prevVer = [[defaults objectForKey:@"version"] intValue];
+        
+        if (version > prevVer) {
+            NSLog(@"Oooh, we need to update %d %d", prevVer, version);
+            //[defaults setInteger:version forKey:@"version"];
+            [defaults synchronize];
+            [self updateDocPack:version withSession:session];
+        } else {
+            NSLog(@"All good");
+        }
     }];
     
     [dataTask resume];
+    
+}
+
+- (void)updateDocPack:(int)newVer withSession:(NSURLSession *)session {
+
+    NSLog(@"Updating to %d", newVer);
+    NSString *urlToZip = [NSString stringWithFormat:@"http://192.168.1.24/foo/ver%d.zip",newVer];
+    NSURLSessionDataTask *zipTask = [session dataTaskWithURL:[NSURL URLWithString:urlToZip] completionHandler:^(NSData *data,NSURLResponse *response, NSError * error){
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths objectAtIndex:0];
+        NSString *zipPath = [path stringByAppendingPathComponent:@"zipfile.zip"];
+        
+        NSLog(@"Storing file to %@", zipPath);
+        [data writeToFile:zipPath options:0 error:&error];
+//        NSString *destinationPath= [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+        NSLog(@"Unzipping to %@", path);
+//       NSString *destinationPath = dirpath;
+        [SSZipArchive unzipFileAtPath:zipPath toDestination:path];
+        
+        
+    }];
+    [zipTask resume];
+
 }
 
 - (void)didReceiveMemoryWarning {
