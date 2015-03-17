@@ -17,6 +17,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSLog(@"trying!");
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:[NSURL URLWithString:@"http://192.168.1.24/foo/foo.txt"] completionHandler:^(NSData *data,NSURLResponse *response, NSError * error){
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSLog(@"%@", json);
+    }];
+    
+    [dataTask resume];
 }
 
 - (void)didReceiveMemoryWarning {
